@@ -56,6 +56,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'q_symfony_api' => env('Q_SYMFONY_SKELETON_API', ''),
 
     'asset_url' => env('ASSET_URL'),
 

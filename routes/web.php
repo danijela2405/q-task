@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthorsController;
+use App\Http\Controllers\BooksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
+    Route::get('/authors', [AuthorsController::class, 'index'])->name('authors.list');
+    Route::get('/authors/{id}', [AuthorsController::class, 'view'])->name('authors.view');
+    Route::delete('/authors/{id}', [AuthorsController::class, 'destroy'])->name('authors.destroy');
+    Route::delete('/books/{id}', [BooksController::class, 'destroy'])->name('books.destroy');
+});
+
+require __DIR__.'/auth.php';
