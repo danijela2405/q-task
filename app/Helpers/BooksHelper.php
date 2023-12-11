@@ -6,6 +6,9 @@ use App\Handler\QSSApiHandler;
 
 class BooksHelper
 {
+    /**
+     * @var QSSApiHandler
+     */
     private QSSApiHandler $apiHandler;
 
     /**
@@ -16,7 +19,18 @@ class BooksHelper
         $this->apiHandler = $apiHandler;
     }
 
-    public function deleteBook(int $id)
+    /**
+     * Add a book
+     */
+    public function addBook(array $data): mixed
+    {
+        return $this->apiHandler->post('books', $data);
+    }
+
+    /**
+     * Delete a book
+     */
+    public function deleteBook(int $id): bool
     {
         return $this->apiHandler->delete('books/'.$id);
     }

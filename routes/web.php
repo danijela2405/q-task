@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware('auth')->group(function () {
@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/authors', [AuthorsController::class, 'index'])->name('authors.list');
     Route::get('/authors/{id}', [AuthorsController::class, 'view'])->name('authors.view');
     Route::delete('/authors/{id}', [AuthorsController::class, 'destroy'])->name('authors.destroy');
+    Route::get('/books', [BooksController::class, 'create'])->name('books.create');
+    Route::post('/books', [BooksController::class, 'store'])->name('books.store');
     Route::delete('/books/{id}', [BooksController::class, 'destroy'])->name('books.destroy');
 });
 

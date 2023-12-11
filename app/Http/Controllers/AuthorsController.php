@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Handler\QSSApiHandler;
 use App\Helpers\AuthorHelper;
-use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Routing\Controller;
 
 class AuthorsController extends Controller
 {
+    /**
+     * @var AuthorHelper
+     */
     private AuthorHelper $authorHelper;
 
     /**
@@ -44,21 +44,8 @@ class AuthorsController extends Controller
     }
 
     /**
-     * Update the user's authors information.
+     * Delete an author
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('authors.list')->with('status', 'authors-updated');
-    }
-
     public function destroy(Request $request, int $id): RedirectResponse
     {
         $this->authorHelper->deleteAuthor($id);

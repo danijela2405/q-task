@@ -7,13 +7,16 @@ use GuzzleHttp\RequestOptions;
 
 class QSSApiHandler
 {
-
+    /**
+     * @var string
+     */
     private string $apiUrl;
-    private Client $client;
 
     /**
-     * @param string $apiUrl
+     * @var Client
      */
+    private Client $client;
+
     public function __construct()
     {
         $this->apiUrl = config('app.q_symfony_api');
@@ -24,25 +27,30 @@ class QSSApiHandler
         ]);
     }
 
-    public function post(string $endpoint, array $body = [], string $token = null)
+    /**
+     * POST to QSS Api
+     */
+    public function post(string $endpoint, array $body = [], string $token = null): mixed
     {
         $uri = $this->apiUrl . $endpoint;
 
-        $headers = [];
-        if ($token) {
-            $headers = [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $token,
-            ];
+        if (!$token) {
+            $token = session('login_token');
         }
 
-        $response = $this->client->post($uri, [
-            RequestOptions::HEADERS => $headers,
-            RequestOptions::JSON => $body,
-        ]);
+        try {
+            $response = $this->client->post($uri, [
+                RequestOptions::HEADERS =>[
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $token,
+                ],
+                RequestOptions::JSON => $body,
+            ]);
+        }catch (\Exception $exception){
+            dump($exception->getMessage());die();
+        }
 
         $statusCode = $response->getStatusCode();
-
         if ($statusCode != 200) {
             return false;
         }
@@ -50,7 +58,10 @@ class QSSApiHandler
         return json_decode($response->getBody()->getContents());
     }
 
-    public function get(string $endpoint, array $query = [])
+    /**
+     * GET from QSS Api
+     */
+    public function get(string $endpoint, array $query = []): mixed
     {
         $uri = $this->apiUrl . $endpoint;
         $token = session('login_token');
@@ -72,7 +83,10 @@ class QSSApiHandler
         return json_decode($response->getBody()->getContents());
     }
 
-    public function delete(string $endpoint)
+    /**
+     * DELETE from QSS Api
+     */
+    public function delete(string $endpoint): bool
     {
         $uri = $this->apiUrl . $endpoint;
         $token = session('login_token');

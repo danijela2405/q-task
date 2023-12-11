@@ -6,6 +6,9 @@ use App\Handler\QSSApiHandler;
 
 class QSSApiUserProvider
 {
+    /**
+     * @var QSSApiHandler
+     */
     private QSSApiHandler $apiHandler;
 
     /**
@@ -16,7 +19,10 @@ class QSSApiUserProvider
         $this->apiHandler = $apiHandler;
     }
 
-    public function getCurrentUser()
+    /**
+     * Get currently signed-in user
+     */
+    public function getCurrentUser(): mixed
     {
         return $this->apiHandler->get('me');
     }
