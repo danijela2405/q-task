@@ -64,3 +64,10 @@ php artisan app:create-author
 ```
 
 You will be prompted to enter all the author data.
+
+### Project code
+
+You can find most of the application code in the app folder, the rest is mostly config and views. 
+QSS Api connection is handled in ```app/Handler/QSSApiHandler.php```
+All of the actions are implemented in the Controller folder and then you can find your path from there.
+
